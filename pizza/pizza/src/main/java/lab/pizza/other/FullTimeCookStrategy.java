@@ -1,4 +1,4 @@
-package lab.pizza;
+package lab.pizza.other;
 
 public class FullTimeCookStrategy implements CookStrategy{
     @Override

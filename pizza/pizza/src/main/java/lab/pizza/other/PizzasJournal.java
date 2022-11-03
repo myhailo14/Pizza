@@ -1,4 +1,4 @@
-package lab.pizza;
+package lab.pizza.other;
 
 import java.util.HashSet;
 

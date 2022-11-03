@@ -1,4 +1,4 @@
-package lab.pizza;
+package lab.pizza.other;
 
 public class Cook {
     private int number;
