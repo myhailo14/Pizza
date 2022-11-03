@@ -8,4 +8,6 @@ public class ConfigDto {
     private int cooksNumber;
     private int pizzasNumber;
     private int pizzaCreationMinTimeInSec;
+    private String cookWorkingStrategy;
+    private String clientsGenerationStrategy;
 }
