@@ -1,10 +1,11 @@
 package lab.pizza.model;
 
 public enum PizzaState {
-    DOUGH(0),
-    FILLING(1),
-    BAKING(2),
-    READY(3);
+    WAITING(0),
+    DOUGH(1),
+    FILLING(2),
+    BAKING(3),
+    READY(4);
     private final int value;
 
     PizzaState(int value) {

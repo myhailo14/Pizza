@@ -1,4 +1,4 @@
-package lab.pizza.cook;
+package lab.pizza.cook.handler;
 
 public abstract class CookBaseHandler implements CookHandler{
     private CookHandler next;

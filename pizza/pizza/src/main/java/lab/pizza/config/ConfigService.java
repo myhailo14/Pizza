@@ -1,7 +1,7 @@
 package lab.pizza.config;
 
 import lab.pizza.client.generator.ClientsGenerationStrategy;
-import lab.pizza.cook.CookWorkingStrategy;
+import lab.pizza.cook.strategy.CookWorkingStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

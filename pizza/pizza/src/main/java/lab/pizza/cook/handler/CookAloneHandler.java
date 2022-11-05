@@ -1,4 +1,4 @@
-package lab.pizza.cook;
+package lab.pizza.cook.handler;
 
 public class CookAloneHandler extends CookBaseHandler{
     @Override
