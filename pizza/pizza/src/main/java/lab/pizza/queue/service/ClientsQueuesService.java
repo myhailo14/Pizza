@@ -30,8 +30,8 @@ public class ClientsQueuesService {
         if (queueIndex < 0 || queueIndex >= clientsQueues.size()) {
             return;
         }
-        System.out.println("Got client "+client+"\t put client in queue #"+queueIndex);
         client.setQueueNumber(queueIndex);
+        System.out.println("Got client "+client+"\t put client in queue #"+queueIndex);
         clientsQueues.get(queueIndex).addClient(client);
     }
 }

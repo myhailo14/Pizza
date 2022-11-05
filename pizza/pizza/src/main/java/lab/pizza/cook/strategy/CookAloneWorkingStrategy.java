@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(scopeName = "prototype")
-public class CookAloneWorkingStrategy implements CookWorkingStrategy{
+public class CookAloneWorkingStrategy implements CookWorkingStrategy {
 
     @Override
     public CookHandler getCookHandler() {
-        return new CookAloneHandler();
+        return null;
     }
 }

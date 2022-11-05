@@ -49,7 +49,11 @@ public class ClientsGenerator {
     }
 
     private int getRandomPizzaTypesAmount() {
-        return RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_NUMBER_OF_PIZZA_TYPES + 1);
+        int value = RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_NUMBER_OF_PIZZA_TYPES + 1);
+        while (value == 0) {
+            value = RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_NUMBER_OF_PIZZA_TYPES + 1);
+        }
+        return value;
     }
 
     private int getRandomPizzaIndex() {

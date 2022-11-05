@@ -6,8 +6,10 @@ import lab.pizza.dto.ConfigDto;
 import lab.pizza.queue.model.ClientsQueue;
 import lab.pizza.queue.service.ClientsQueuesManagerService;
 import lab.pizza.queue.service.ClientsQueuesService;
+import lab.pizza.repository.PizzaRepository;
 import lab.pizza.service.factory.ClientsGenerationStrategyFactory;
 import lab.pizza.service.factory.CookWorkingStrategyFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import lab.pizza.config.*;
@@ -19,6 +21,7 @@ import java.util.List;
 public class PizzaService {
     private final ClientsGenerationStrategyFactory clientsGenerationStrategyFactory;
     private final CookWorkingStrategyFactory cookWorkingStrategyFactory;
+    private final PizzaRepository pizzaRepository;
     private ClientsQueuesService clientsQueuesService;
     private ClientsQueuesManagerService clientsQueuesManagerService;
     private ConfigService configService;
@@ -26,11 +29,14 @@ public class PizzaService {
     @Value("${client_generation_delay_in_seconds}")
     private int clientGenerationDelayInSeconds;
 
-    public PizzaService(ClientsGenerationStrategyFactory clientsGenerationStrategyFactory,
-                        CookWorkingStrategyFactory cookWorkingStrategyFactory) {
+    @Autowired
+    public PizzaService(final ClientsGenerationStrategyFactory clientsGenerationStrategyFactory,
+                        final CookWorkingStrategyFactory cookWorkingStrategyFactory,
+                        final PizzaRepository pizzaRepository) {
         this.clientsGenerationStrategyFactory = clientsGenerationStrategyFactory;
         this.cookWorkingStrategyFactory = cookWorkingStrategyFactory;
         clientsQueues = new ArrayList<>();
+        this.pizzaRepository = pizzaRepository;
     }
 
 
@@ -42,7 +48,12 @@ public class PizzaService {
         configService = createConfig(clientsGenerationStrategy, cookWorkingStrategy, configDto);
     }
 
+    private void loadPizzas() {
+        pizzaRepository.loadPizzas(configService.getPizzasNumber());
+    }
+
     public void startService() {
+        loadPizzas();
         createEmptyClientsQueues();
         startClientsQueuesFilling();
     }
