@@ -1,9 +1,20 @@
 package lab.pizza.cook.handler;
 
-public class CookFillPizzaHandler extends CookBaseHandler{
+import lab.pizza.cook.service.CookHandlersService;
+import lab.pizza.model.PizzaState;
+
+public class CookFillPizzaHandler extends CookBaseHandler {
+    public CookFillPizzaHandler(CookHandlersService cookHandlersService) {
+        super(cookHandlersService);
+    }
+
     @Override
     public void handlePizzaPart() {
-        //putting ingredients...
-        super.handlePizzaPart();
+        handlePizzaState(pizza, PizzaState.FILLING);
+        if (isStop()) {
+            requestCookHandlerReplacement(this);
+        } else {
+            super.handlePizzaPart();
+        }
     }
 }

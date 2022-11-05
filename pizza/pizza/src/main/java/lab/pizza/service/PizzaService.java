@@ -44,7 +44,7 @@ public class PizzaService {
         ClientsGenerationStrategy clientsGenerationStrategy = clientsGenerationStrategyFactory
                 .getClientsGenerationStrategy(configDto.getClientsGenerationStrategy());
         CookWorkingStrategy cookWorkingStrategy = cookWorkingStrategyFactory
-                .getCookWorkingStrategy(configDto.getCookWorkingStrategy());
+                .getCookWorkingStrategy(configDto.getCookWorkingStrategy(), configDto.getCooksNumber());
         configService = createConfig(clientsGenerationStrategy, cookWorkingStrategy, configDto);
     }
 

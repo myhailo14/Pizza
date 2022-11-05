@@ -4,19 +4,50 @@ import lab.pizza.cook.handler.CookBakePizzaHandler;
 import lab.pizza.cook.handler.CookFillPizzaHandler;
 import lab.pizza.cook.handler.CookHandler;
 import lab.pizza.cook.handler.CookMakeDoughHandler;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import lab.pizza.cook.service.CookHandlersService;
+import lab.pizza.model.Pizza;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-@Component
-@Scope(scopeName = "prototype")
+import java.util.List;
+
+@RequiredArgsConstructor
+@Setter
 public class CookPartWorkingStrategy implements CookWorkingStrategy {
+    private final CookHandlersService cookHandlersService;
+    private int cooksNumber;
+    private Pizza pizza;
+
     @Override
     public CookHandler getCookHandler() {
-        CookHandler doughHandler = new CookMakeDoughHandler();
-        CookHandler fillingHandler = new CookFillPizzaHandler();
-        CookHandler bakeHandler = new CookBakePizzaHandler();
+        if (!cookHandlersService.areCookHandlersLoaded()) {
+            cookHandlersService.loadCookHandlers(cooksNumber, this);
+        }
+        CookHandler doughHandler = getCookHandlerForPizzaMakingStart(new CookMakeDoughHandler(cookHandlersService));
+        CookHandler fillingHandler = getCookHandlerForPizzaMakingStart(new CookFillPizzaHandler(cookHandlersService));
+        CookHandler bakeHandler = getCookHandlerForPizzaMakingStart(new CookBakePizzaHandler(cookHandlersService));
+        setPizzaForCookHandlers(List.of(doughHandler, fillingHandler, bakeHandler), pizza);
         doughHandler.setNext(fillingHandler);
         fillingHandler.setNext(bakeHandler);
         return doughHandler;
+    }
+
+    private void setPizzaForCookHandlers(List<CookHandler> cookHandlers, Pizza pizza) {
+        for (CookHandler cookHandler : cookHandlers) {
+            cookHandler.setPizza(pizza);
+        }
+    }
+
+    @Override
+    public void setPizza(Pizza pizza) {
+        this.pizza = pizza;
+    }
+
+    private CookHandler getCookHandlerForPizzaMakingStart(CookHandler cookHandler) {
+        var handler = cookHandlersService.getCookHandlerReplacement(cookHandler);
+        while (handler == null) {
+            handler = cookHandlersService.getCookHandlerReplacement(cookHandler);
+        }
+        return handler;
     }
 }

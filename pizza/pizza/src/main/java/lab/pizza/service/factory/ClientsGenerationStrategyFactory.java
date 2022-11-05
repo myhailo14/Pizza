@@ -1,16 +1,16 @@
 package lab.pizza.service.factory;
 
 import lab.pizza.client.generator.ClientsGenerationStrategy;
-import lab.pizza.client.generator.ClientsGenerator;
 import lab.pizza.client.generator.DefaultClientsGenerationStrategy;
 import lab.pizza.client.generator.RandomClientsGenerationStrategy;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
 @Service
+@RequiredArgsConstructor
 public class ClientsGenerationStrategyFactory {
     private final HashMap<String, ClientsGenerationStrategy> clientsGenerationMap;
 

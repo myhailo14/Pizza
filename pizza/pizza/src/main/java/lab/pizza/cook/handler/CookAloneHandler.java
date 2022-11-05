@@ -1,24 +1,35 @@
 package lab.pizza.cook.handler;
 
-import lab.pizza.model.Pizza;
+import lab.pizza.cook.service.CookHandlersService;
 import lab.pizza.model.PizzaState;
-import lombok.RequiredArgsConstructor;
 
-
-@RequiredArgsConstructor
 public class CookAloneHandler extends CookBaseHandler {
-    private final Pizza pizza;
-    private final int pizzaCreationMinTimeInSec;
+    public CookAloneHandler(CookHandlersService cookHandlersService) {
+        super(cookHandlersService);
+    }
+
     @Override
     public void handlePizzaPart() {
-        //cooking alone...
-        for(PizzaState pizzaState : PizzaState.values()){
-            pizza.setPizzaState(pizzaState);
-            try {
-                Thread.sleep(pizzaCreationMinTimeInSec*1000L);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+        isWorking = true;
+        while (!isStop && pizza.getPizzaState() != PizzaState.READY) {
+            for (PizzaState pizzaState : PizzaState.values()) {
+                if (pizzaState != pizza.getPizzaState()) {
+                    continue;
+                }
+                pizza.setPizzaState(pizzaState);
+                if(pizzaState == PizzaState.READY){
+                    break;
+                }
+                try {
+                    Thread.sleep(pizzaCreationMinTimeInSec / PizzaState.values().length * 1000L);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        }
+        isWorking = false;
+        if (isStop) {
+            requestCookHandlerReplacement(this);
         }
     }
 }
