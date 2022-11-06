@@ -2,41 +2,39 @@ package lab.pizza.client.generator;
 
 import lab.pizza.client.model.Client;
 import lab.pizza.model.Pizza;
-import lab.pizza.model.PizzaState;
 import lab.pizza.repository.PizzaRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class ClientsGenerator {
     private final PizzaRepository pizzaRepository;
     private static final Random RANDOM_PIZZA_INDEX_GENERATOR = new Random();
     @Value("${max_number_of_pizza_types_per_client}")
     private int MAX_NUMBER_OF_PIZZA_TYPES;
-    @Value("${max_pizza_amount_per_client}")
-    private int MAX_PIZZA_AMOUNT;
+    private int currentClientId;
+    private int currentPizzaId;
+
+    @Autowired
+    public ClientsGenerator(final PizzaRepository pizzaRepository) {
+        this.pizzaRepository = pizzaRepository;
+        currentClientId = 0;
+        currentPizzaId = 0;
+    }
 
     public List<Client> getClients(int clientsAmount) {
         List<Client> clients = new ArrayList<>();
         for (int i = 0; i < clientsAmount; i++) {
             var order = generateClientOrder();
-            var client = new Client();
+            var client = new Client(currentClientId);
+            currentClientId++;
             client.setOrder(order);
             clients.add(client);
         }
         return clients;
-    }
-
-    private int getRandomPizzaAmount() {
-        int pizzaAmount = RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_PIZZA_AMOUNT + 1);
-        while(pizzaAmount == 0){
-            pizzaAmount = RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_PIZZA_AMOUNT + 1);
-        }
-        return pizzaAmount;
     }
 
     private List<Pizza> generateClientOrder() {
@@ -44,10 +42,7 @@ public class ClientsGenerator {
         int pizzaTypes = getRandomPizzaTypesAmount();
         for (int i = 0; i < pizzaTypes; i++) {
             final Pizza pizza = getRandomPizza();
-            final int pizzaAmount = getRandomPizzaAmount();
-            for (int k = 0; k < pizzaAmount; k++) {
-                order.add(new Pizza(pizza.getName(), PizzaState.WAITING));
-            }
+            order.add(pizza);
         }
         return order;
     }
@@ -67,6 +62,8 @@ public class ClientsGenerator {
 
     private Pizza getRandomPizza() {
         int pizzaIndex = getRandomPizzaIndex();
-        return pizzaRepository.getPizza(pizzaIndex);
+        var pizza = pizzaRepository.getPizza(pizzaIndex);
+        pizza.setId(currentPizzaId++);
+        return pizza;
     }
 }

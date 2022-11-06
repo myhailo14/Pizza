@@ -2,20 +2,24 @@ package lab.pizza.cook.generator;
 
 import lab.pizza.cook.handler.*;
 import lab.pizza.cook.service.CookHandlersService;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 public class CookHandlersGenerator {
     private final CookHandlersService cookHandlersService;
     private static final int COOK_TYPES_NUMBER = 3;
+    private int currentCookHandlerId;
+    public CookHandlersGenerator(CookHandlersService cookHandlersService) {
+        this.cookHandlersService = cookHandlersService;
+        currentCookHandlerId = 0;
+    }
 
     public List<CookHandler> generateAloneCookHandlers(final int cooksNumber) {
         final List<CookHandler> cookHandlers = new ArrayList<>();
         for (int i = 0; i < cooksNumber; i++) {
-            cookHandlers.add(new CookAloneHandler(cookHandlersService));
+            cookHandlers.add(new CookAloneHandler(cookHandlersService, currentCookHandlerId));
+            currentCookHandlerId++;
         }
         return cookHandlers;
     }
@@ -29,15 +33,15 @@ public class CookHandlersGenerator {
             cooksLeftToAdd++;
         }
         for (int i = 0; i < cooksAmountDivisibleOnCookTypesNumber; i += COOK_TYPES_NUMBER) {
-            cookHandlers.add(new CookMakeDoughHandler(cookHandlersService));
-            cookHandlers.add(new CookFillPizzaHandler(cookHandlersService));
-            cookHandlers.add(new CookBakePizzaHandler(cookHandlersService));
+            cookHandlers.add(new CookMakeDoughHandler(cookHandlersService, currentCookHandlerId++));
+            cookHandlers.add(new CookFillPizzaHandler(cookHandlersService, currentCookHandlerId++));
+            cookHandlers.add(new CookBakePizzaHandler(cookHandlersService, currentCookHandlerId++));
         }
         while (cooksLeftToAdd > 0) {
             if (cooksLeftToAdd % 2 == 0) {
-                cookHandlers.add(new CookFillPizzaHandler(cookHandlersService));
+                cookHandlers.add(new CookFillPizzaHandler(cookHandlersService, currentCookHandlerId++));
             } else {
-                cookHandlers.add(new CookMakeDoughHandler(cookHandlersService));
+                cookHandlers.add(new CookMakeDoughHandler(cookHandlersService, currentCookHandlerId++));
             }
             cooksLeftToAdd--;
         }

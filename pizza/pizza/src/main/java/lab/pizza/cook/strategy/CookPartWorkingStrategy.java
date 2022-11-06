@@ -23,9 +23,12 @@ public class CookPartWorkingStrategy implements CookWorkingStrategy {
         if (!cookHandlersService.areCookHandlersLoaded()) {
             cookHandlersService.loadCookHandlers(cooksNumber, this);
         }
-        final CookHandler doughHandler = getCookHandlerForPizzaMakingStart(new CookMakeDoughHandler(cookHandlersService));
-        final CookHandler fillingHandler = getCookHandlerForPizzaMakingStart(new CookFillPizzaHandler(cookHandlersService));
-        final CookHandler bakeHandler = getCookHandlerForPizzaMakingStart(new CookBakePizzaHandler(cookHandlersService));
+        final CookHandler doughHandler =
+                getCookHandlerForPizzaMakingStart(new CookMakeDoughHandler(cookHandlersService, 0));
+        final CookHandler fillingHandler =
+                getCookHandlerForPizzaMakingStart(new CookFillPizzaHandler(cookHandlersService, 0));
+        final CookHandler bakeHandler =
+                getCookHandlerForPizzaMakingStart(new CookBakePizzaHandler(cookHandlersService, 0));
         setPizzaForCookHandlers(List.of(doughHandler, fillingHandler, bakeHandler), pizza);
         setPizzaCreationTimeForCookHandlers(List.of(doughHandler, fillingHandler, bakeHandler), pizzaCreationMinTimeInSec);
         doughHandler.setNext(fillingHandler);

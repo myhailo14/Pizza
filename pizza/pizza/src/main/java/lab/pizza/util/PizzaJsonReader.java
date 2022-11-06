@@ -8,7 +8,6 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +25,12 @@ public class PizzaJsonReader {
             JSONArray jsonArray = (JSONArray) jsonObject.get("pizzas");
             int i = 0;
             for (Object o : jsonArray) {
-                if(i>=pizzasNumber){
+                if (i >= pizzasNumber) {
                     break;
                 }
                 i++;
                 String pizzaName = (String) o;
-                pizzas.add(new Pizza(pizzaName, PizzaState.WAITING));
+                pizzas.add(new Pizza(0, pizzaName, PizzaState.WAITING));
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

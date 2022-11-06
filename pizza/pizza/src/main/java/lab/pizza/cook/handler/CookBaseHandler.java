@@ -11,10 +11,21 @@ public abstract class CookBaseHandler implements CookHandler {
     protected int pizzaCreationMinTimeInSec;
     protected boolean isWorking;
     protected boolean isStop;
-    public CookBaseHandler(final CookHandlersService cookHandlersService) {
+    protected int id;
+
+    public CookBaseHandler(final CookHandlersService cookHandlersService, final int id) {
         this.cookHandlersService = cookHandlersService;
         isWorking = false;
         isStop = false;
+        this.id = id;
+    }
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Pizza getPizza() {

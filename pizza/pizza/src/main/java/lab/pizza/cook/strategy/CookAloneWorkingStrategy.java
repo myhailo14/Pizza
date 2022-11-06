@@ -19,7 +19,8 @@ public class CookAloneWorkingStrategy implements CookWorkingStrategy {
         if (!cookHandlersService.areCookHandlersLoaded()) {
             cookHandlersService.loadCookHandlers(cooksNumber, this);
         }
-        var cookHandler = cookHandlersService.getCookHandlerReplacement(new CookAloneHandler(cookHandlersService));
+        var cookHandler = cookHandlersService
+                .getCookHandlerReplacement(new CookAloneHandler(cookHandlersService, 0));
         cookHandler.setPizza(pizza);
         cookHandler.setPizzaCreationMinTimeInSec(pizzaCreationMinTimeInSec);
         return cookHandler;

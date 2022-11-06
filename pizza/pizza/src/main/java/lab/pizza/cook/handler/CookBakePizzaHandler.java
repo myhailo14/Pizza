@@ -5,8 +5,8 @@ import lab.pizza.model.PizzaState;
 
 public class CookBakePizzaHandler extends CookBaseHandler {
 
-    public CookBakePizzaHandler(CookHandlersService cookHandlersService) {
-        super(cookHandlersService);
+    public CookBakePizzaHandler(CookHandlersService cookHandlersService, final int id) {
+        super(cookHandlersService, id);
     }
 
     @Override
