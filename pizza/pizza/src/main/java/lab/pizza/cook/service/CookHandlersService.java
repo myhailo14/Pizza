@@ -37,9 +37,11 @@ public class CookHandlersService {
             areCookHandlersLoaded = true;
         }
     }
-    public boolean areCookHandlersLoaded(){
+
+    public boolean areCookHandlersLoaded() {
         return areCookHandlersLoaded;
     }
+
     private void createCookHandlersDependingOnWorkingStrategy(final CookWorkingStrategy cookWorkingStrategy,
                                                               final int cooksNumber) {
         List<CookHandler> resultHandlers = new ArrayList<>();
@@ -53,8 +55,8 @@ public class CookHandlersService {
 
     public synchronized CookHandler getCookHandlerReplacement(final CookHandler cookHandler) {
         for (final CookHandler handler : cookHandlers) {
-            if(handler.getClass() == cookHandler.getClass() &&
-                    (!handler.isWorking() || !handler.isStop())){
+            if (handler.getClass() == cookHandler.getClass() &&
+                    (!handler.isWorking() || !handler.isStop())) {
                 return handler;
             }
         }

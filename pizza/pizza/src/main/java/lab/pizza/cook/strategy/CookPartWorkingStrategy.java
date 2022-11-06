@@ -17,7 +17,7 @@ public class CookPartWorkingStrategy implements CookWorkingStrategy {
     private final CookHandlersService cookHandlersService;
     private int cooksNumber;
     private Pizza pizza;
-
+    private int pizzaCreationMinTimeInSec;
     @Override
     public synchronized CookHandler getCookHandler() {
         if (!cookHandlersService.areCookHandlersLoaded()) {
@@ -27,11 +27,17 @@ public class CookPartWorkingStrategy implements CookWorkingStrategy {
         final CookHandler fillingHandler = getCookHandlerForPizzaMakingStart(new CookFillPizzaHandler(cookHandlersService));
         final CookHandler bakeHandler = getCookHandlerForPizzaMakingStart(new CookBakePizzaHandler(cookHandlersService));
         setPizzaForCookHandlers(List.of(doughHandler, fillingHandler, bakeHandler), pizza);
+        setPizzaCreationTimeForCookHandlers(List.of(doughHandler, fillingHandler, bakeHandler), pizzaCreationMinTimeInSec);
         doughHandler.setNext(fillingHandler);
         fillingHandler.setNext(bakeHandler);
         return doughHandler;
     }
-
+    private void setPizzaCreationTimeForCookHandlers(List<CookHandler> cookHandlers,
+                                                     final int pizzaCreationMinTimeInSec){
+        for(CookHandler cookHandler: cookHandlers){
+            cookHandler.setPizzaCreationMinTimeInSec(pizzaCreationMinTimeInSec);
+        }
+    }
     private void setPizzaForCookHandlers(List<CookHandler> cookHandlers, Pizza pizza) {
         for (CookHandler cookHandler : cookHandlers) {
             cookHandler.setPizza(pizza);

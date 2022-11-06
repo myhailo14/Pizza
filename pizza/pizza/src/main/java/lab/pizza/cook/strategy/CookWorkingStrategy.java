@@ -7,4 +7,5 @@ public interface CookWorkingStrategy {
     void setCooksNumber(int cooksNumber);
     CookHandler getCookHandler();
     void setPizza(Pizza pizza);
+    void setPizzaCreationMinTimeInSec(final int pizzaCreationMinTimeInSec);
 }

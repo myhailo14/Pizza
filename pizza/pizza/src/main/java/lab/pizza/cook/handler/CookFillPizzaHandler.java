@@ -11,6 +11,7 @@ public class CookFillPizzaHandler extends CookBaseHandler {
     @Override
     public void handlePizzaPart() {
         handlePizzaState(pizza, PizzaState.FILLING);
+        System.out.printf("Pizza %s is filled\n", pizza.getName());
         if (isStop()) {
             requestCookHandlerReplacement(this);
         } else {

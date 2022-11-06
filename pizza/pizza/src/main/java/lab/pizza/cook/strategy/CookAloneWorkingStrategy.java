@@ -13,6 +13,7 @@ public class CookAloneWorkingStrategy implements CookWorkingStrategy {
     private final CookHandlersService cookHandlersService;
     private int cooksNumber;
     private Pizza pizza;
+    private int pizzaCreationMinTimeInSec;
     @Override
     public synchronized CookHandler getCookHandler() {
         if (!cookHandlersService.areCookHandlersLoaded()) {
@@ -20,6 +21,7 @@ public class CookAloneWorkingStrategy implements CookWorkingStrategy {
         }
         var cookHandler = cookHandlersService.getCookHandlerReplacement(new CookAloneHandler(cookHandlersService));
         cookHandler.setPizza(pizza);
+        cookHandler.setPizzaCreationMinTimeInSec(pizzaCreationMinTimeInSec);
         return cookHandler;
     }
 

@@ -12,6 +12,7 @@ public class CookMakeDoughHandler extends CookBaseHandler{
     @Override
     public void handlePizzaPart() {
         handlePizzaState(pizza, PizzaState.DOUGH);
+        System.out.printf("Pizza %s is dough\n", pizza.getName());
         if (isStop()) {
             requestCookHandlerReplacement(this);
         } else {

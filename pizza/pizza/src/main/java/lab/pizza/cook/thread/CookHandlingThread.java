@@ -8,6 +8,9 @@ import lab.pizza.queue.service.ClientsQueuesService;
 import lab.pizza.service.factory.CookWorkingStrategyFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 @RequiredArgsConstructor
 public class CookHandlingThread extends Thread {
@@ -37,11 +40,19 @@ public class CookHandlingThread extends Thread {
     private void handleClientOrder(final Client client, final CookWorkingStrategy cookWorkingStrategy) {
         var order = client.getOrder();
         final int pizzaCreationMinTimeInSec = configService.getPizzaCreationMinTimeInSec();
+        List<CookPizzaHandlerThread> cookPizzaHandlerThreads = new LinkedList<>();
         for (var pizza : order) {
-            cookWorkingStrategy.setPizza(pizza);
-            var cookHandler = cookWorkingStrategy.getCookHandler();
-            cookHandler.setPizzaCreationMinTimeInSec(pizzaCreationMinTimeInSec);
-            cookHandler.handlePizzaPart();
+            final CookPizzaHandlerThread cookPizzaHandlerThread =
+                    new CookPizzaHandlerThread(pizza, cookWorkingStrategy, pizzaCreationMinTimeInSec);
+            cookPizzaHandlerThread.start();
+            cookPizzaHandlerThreads.add(cookPizzaHandlerThread);
+        }
+        for (var thread : cookPizzaHandlerThreads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
