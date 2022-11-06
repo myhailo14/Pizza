@@ -18,6 +18,6 @@ public class ConfigService {
     private int cooksNumber;
     private int pizzasNumber;
     private int pizzaCreationMinTimeInSec;
-    private CookWorkingStrategy cookWorkingStrategy;
+    private String cookWorkingStrategy;
     private ClientsGenerationStrategy clientsGenerationStrategy;
 }

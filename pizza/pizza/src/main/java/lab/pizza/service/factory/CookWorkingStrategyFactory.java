@@ -4,12 +4,14 @@ import lab.pizza.cook.service.CookHandlersService;
 import lab.pizza.cook.strategy.CookAloneWorkingStrategy;
 import lab.pizza.cook.strategy.CookPartWorkingStrategy;
 import lab.pizza.cook.strategy.CookWorkingStrategy;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
+@Getter
 public class CookWorkingStrategyFactory {
     private final CookHandlersService cookHandlersService;
 

@@ -14,7 +14,7 @@ public class CookAloneWorkingStrategy implements CookWorkingStrategy {
     private int cooksNumber;
     private Pizza pizza;
     @Override
-    public CookHandler getCookHandler() {
+    public synchronized CookHandler getCookHandler() {
         if (!cookHandlersService.areCookHandlersLoaded()) {
             cookHandlersService.loadCookHandlers(cooksNumber, this);
         }

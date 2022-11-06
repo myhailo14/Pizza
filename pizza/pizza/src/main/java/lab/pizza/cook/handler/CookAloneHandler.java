@@ -13,9 +13,9 @@ public class CookAloneHandler extends CookBaseHandler {
         isWorking = true;
         while (!isStop && pizza.getPizzaState() != PizzaState.READY) {
             for (PizzaState pizzaState : PizzaState.values()) {
-                if (pizzaState != pizza.getPizzaState()) {
+                /*if (pizzaState != pizza.getPizzaState()) {
                     continue;
-                }
+                }*/
                 pizza.setPizzaState(pizzaState);
                 if(pizzaState == PizzaState.READY){
                     break;

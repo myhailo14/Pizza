@@ -2,15 +2,13 @@ package lab.pizza.client.generator;
 
 import lab.pizza.client.model.Client;
 import lab.pizza.model.Pizza;
+import lab.pizza.model.PizzaState;
 import lab.pizza.repository.PizzaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,16 +32,22 @@ public class ClientsGenerator {
     }
 
     private int getRandomPizzaAmount() {
-        return RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_PIZZA_AMOUNT + 1);
+        int pizzaAmount = RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_PIZZA_AMOUNT + 1);
+        while(pizzaAmount == 0){
+            pizzaAmount = RANDOM_PIZZA_INDEX_GENERATOR.nextInt(MAX_PIZZA_AMOUNT + 1);
+        }
+        return pizzaAmount;
     }
 
-    private HashMap<Pizza, Integer> generateClientOrder() {
-        HashMap<Pizza, Integer> order = new HashMap<>();
+    private List<Pizza> generateClientOrder() {
+        List<Pizza> order = new LinkedList<>();
         int pizzaTypes = getRandomPizzaTypesAmount();
         for (int i = 0; i < pizzaTypes; i++) {
             final Pizza pizza = getRandomPizza();
             final int pizzaAmount = getRandomPizzaAmount();
-            order.put(pizza, pizzaAmount);
+            for (int k = 0; k < pizzaAmount; k++) {
+                order.add(new Pizza(pizza.getName(), PizzaState.WAITING));
+            }
         }
         return order;
     }

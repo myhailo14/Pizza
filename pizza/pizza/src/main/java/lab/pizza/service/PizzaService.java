@@ -1,6 +1,7 @@
 package lab.pizza.service;
 
 import lab.pizza.client.generator.ClientsGenerationStrategy;
+import lab.pizza.cook.service.CookHandlersManagerService;
 import lab.pizza.cook.strategy.CookWorkingStrategy;
 import lab.pizza.dto.ConfigDto;
 import lab.pizza.queue.model.ClientsQueue;
@@ -24,6 +25,7 @@ public class PizzaService {
     private final PizzaRepository pizzaRepository;
     private ClientsQueuesService clientsQueuesService;
     private ClientsQueuesManagerService clientsQueuesManagerService;
+    private CookHandlersManagerService cookHandlersManagerService;
     private ConfigService configService;
     private final List<ClientsQueue> clientsQueues;
     @Value("${client_generation_delay_in_seconds}")
@@ -43,9 +45,7 @@ public class PizzaService {
     public void initConfigService(ConfigDto configDto) {
         ClientsGenerationStrategy clientsGenerationStrategy = clientsGenerationStrategyFactory
                 .getClientsGenerationStrategy(configDto.getClientsGenerationStrategy());
-        CookWorkingStrategy cookWorkingStrategy = cookWorkingStrategyFactory
-                .getCookWorkingStrategy(configDto.getCookWorkingStrategy(), configDto.getCooksNumber());
-        configService = createConfig(clientsGenerationStrategy, cookWorkingStrategy, configDto);
+        configService = createConfig(clientsGenerationStrategy, configDto);
     }
 
     private void loadPizzas() {
@@ -56,6 +56,11 @@ public class PizzaService {
         loadPizzas();
         createEmptyClientsQueues();
         startClientsQueuesFilling();
+        startClientOrdersHandling();
+    }
+    private void startClientOrdersHandling(){
+        cookHandlersManagerService = new CookHandlersManagerService(configService, cookWorkingStrategyFactory, clientsQueuesService);
+        cookHandlersManagerService.startOrdersHandling();
     }
 
     private void startClientsQueuesFilling() {
@@ -69,10 +74,9 @@ public class PizzaService {
     }
 
     private ConfigService createConfig(ClientsGenerationStrategy clientsGenerationStrategy,
-                                       CookWorkingStrategy cookWorkingStrategy,
                                        ConfigDto configDto) {
         return ConfigService.builder()
-                .cookWorkingStrategy(cookWorkingStrategy)
+                .cookWorkingStrategy(configDto.getCookWorkingStrategy())
                 .clientsGenerationStrategy(clientsGenerationStrategy)
                 .pizzasNumber(configDto.getPizzasNumber())
                 .payDesksNumber(configDto.getPayDesksNumber())

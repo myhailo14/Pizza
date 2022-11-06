@@ -10,4 +10,5 @@ public interface CookHandler {
     void setStop(boolean isStop);
     void handlePizzaPart();
     void setNext(CookHandler handler);
+    void setPizzaCreationMinTimeInSec(int pizzaCreationMinTimeInSec);
 }
