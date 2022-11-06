@@ -1,6 +1,7 @@
 package lab.pizza.cook.handler;
 
 import lab.pizza.cook.service.CookHandlersService;
+import lab.pizza.logger.PizzasLogger;
 import lab.pizza.model.PizzaState;
 
 public class CookBakePizzaHandler extends CookBaseHandler {
@@ -16,6 +17,7 @@ public class CookBakePizzaHandler extends CookBaseHandler {
         if (isStop()) {
             requestCookHandlerReplacement(this);
         } else {
+            PizzasLogger.logPizzaEnd(pizza);
             pizza.setPizzaState(PizzaState.READY);
         }
     }

@@ -1,6 +1,7 @@
 package lab.pizza.cook.handler;
 
 import lab.pizza.cook.service.CookHandlersService;
+import lab.pizza.logger.PizzasLogger;
 import lab.pizza.model.PizzaState;
 
 public class CookAloneHandler extends CookBaseHandler {
@@ -13,6 +14,7 @@ public class CookAloneHandler extends CookBaseHandler {
         isWorking = true;
         //System.out.println("Starting pizza handling :" + pizza.getName());
         while (!isStop && pizza.getPizzaState() != PizzaState.READY) {
+            PizzasLogger.logPizzaStart(pizza);
             for (PizzaState pizzaState : PizzaState.values()) {
                 if (pizzaState.getValue() < pizza.getPizzaState().getValue()) {
                     continue;
@@ -35,6 +37,8 @@ public class CookAloneHandler extends CookBaseHandler {
         isWorking = false;
         if (isStop) {
             requestCookHandlerReplacement(this);
+        } else {
+            PizzasLogger.logPizzaEnd(pizza);
         }
     }
 }

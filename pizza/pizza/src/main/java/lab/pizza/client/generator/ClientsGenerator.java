@@ -2,6 +2,7 @@ package lab.pizza.client.generator;
 
 import lab.pizza.client.model.Client;
 import lab.pizza.model.Pizza;
+import lab.pizza.model.PizzaState;
 import lab.pizza.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +43,8 @@ public class ClientsGenerator {
         int pizzaTypes = getRandomPizzaTypesAmount();
         for (int i = 0; i < pizzaTypes; i++) {
             final Pizza pizza = getRandomPizza();
-            order.add(pizza);
+            final Pizza pizzaToAdd = new Pizza(pizza.getId(), pizza.getName(), PizzaState.WAITING);
+            order.add(pizzaToAdd);
         }
         return order;
     }
