@@ -1,8 +1,9 @@
 package lab.pizza.service;
 
 import lab.pizza.client.generator.ClientsGenerationStrategy;
+import lab.pizza.cook.handler.CookHandler;
 import lab.pizza.cook.service.CookHandlersManagerService;
-import lab.pizza.cook.strategy.CookWorkingStrategy;
+import lab.pizza.cook.service.CookHandlersService;
 import lab.pizza.dto.ConfigDto;
 import lab.pizza.queue.model.ClientsQueue;
 import lab.pizza.queue.service.ClientsQueuesManagerService;
@@ -23,6 +24,7 @@ public class PizzaService {
     private final ClientsGenerationStrategyFactory clientsGenerationStrategyFactory;
     private final CookWorkingStrategyFactory cookWorkingStrategyFactory;
     private final PizzaRepository pizzaRepository;
+    private final CookHandlersService cookHandlersService;
     private ClientsQueuesService clientsQueuesService;
     private ClientsQueuesManagerService clientsQueuesManagerService;
     private CookHandlersManagerService cookHandlersManagerService;
@@ -34,9 +36,10 @@ public class PizzaService {
     @Autowired
     public PizzaService(final ClientsGenerationStrategyFactory clientsGenerationStrategyFactory,
                         final CookWorkingStrategyFactory cookWorkingStrategyFactory,
-                        final PizzaRepository pizzaRepository) {
+                        final PizzaRepository pizzaRepository, CookHandlersService cookHandlersService) {
         this.clientsGenerationStrategyFactory = clientsGenerationStrategyFactory;
         this.cookWorkingStrategyFactory = cookWorkingStrategyFactory;
+        this.cookHandlersService = cookHandlersService;
         clientsQueues = new ArrayList<>();
         this.pizzaRepository = pizzaRepository;
     }
@@ -58,7 +61,8 @@ public class PizzaService {
         startClientsQueuesFilling();
         startClientOrdersHandling();
     }
-    private void startClientOrdersHandling(){
+
+    private void startClientOrdersHandling() {
         cookHandlersManagerService = new CookHandlersManagerService(configService, cookWorkingStrategyFactory, clientsQueuesService);
         cookHandlersManagerService.startOrdersHandling();
     }
@@ -85,4 +89,29 @@ public class PizzaService {
                 .build();
     }
 
+    public List<ClientsQueue> getClientsQueues() {
+        return clientsQueues;
+    }
+
+    public List<CookHandler> getCookHandlers() {
+        return cookHandlersService.getCookHandlers();
+    }
+
+    public void stopCook(final int id) {
+        setStopForCook(id, true);
+    }
+
+    private void setStopForCook(final int id, final boolean stop) {
+        var cookHandlers = cookHandlersService.getCookHandlers();
+        for (var cookHandler : cookHandlers) {
+            if (cookHandler.getId() == id) {
+                cookHandler.setStop(stop);
+                break;
+            }
+        }
+    }
+
+    public void resumeCook(final int id) {
+        setStopForCook(id, false);
+    }
 }

@@ -22,12 +22,10 @@ public class CookHandlingThread extends Thread {
 
     @Override
     public void run() {
-        final CookWorkingStrategy cookWorkingStrategy = cookWorkingStrategyFactory
-                .getCookWorkingStrategy(configService.getCookWorkingStrategy(), configService.getCooksNumber());
         while (true) {
             if (isClientsQueueFilled(clientsQueue)) {
                 var firstClientInQueue = clientsQueue.getClients().get(FIRST_CLIENT_INDEX);
-                handleClientOrder(firstClientInQueue, cookWorkingStrategy);
+                handleClientOrder(firstClientInQueue);
                 popClientFromQueue(firstClientInQueue);
             }
         }
@@ -37,11 +35,13 @@ public class CookHandlingThread extends Thread {
         clientsQueuesService.deleteClientFromQueue(client);
     }
 
-    private void handleClientOrder(final Client client, final CookWorkingStrategy cookWorkingStrategy) {
+    private void handleClientOrder(final Client client) {
         var order = client.getOrder();
         final int pizzaCreationMinTimeInSec = configService.getPizzaCreationMinTimeInSec();
         List<CookPizzaHandlerThread> cookPizzaHandlerThreads = new LinkedList<>();
         for (var pizza : order) {
+            final CookWorkingStrategy cookWorkingStrategy = cookWorkingStrategyFactory
+                    .getCookWorkingStrategy(configService.getCookWorkingStrategy(), configService.getCooksNumber());
             final CookPizzaHandlerThread cookPizzaHandlerThread =
                     new CookPizzaHandlerThread(pizza, cookWorkingStrategy, pizzaCreationMinTimeInSec);
             cookPizzaHandlerThread.start();

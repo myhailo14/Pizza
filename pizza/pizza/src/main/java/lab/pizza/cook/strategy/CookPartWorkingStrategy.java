@@ -18,8 +18,9 @@ public class CookPartWorkingStrategy implements CookWorkingStrategy {
     private int cooksNumber;
     private Pizza pizza;
     private int pizzaCreationMinTimeInSec;
+
     @Override
-    public synchronized CookHandler getCookHandler() {
+    public CookHandler getCookHandler() {
         if (!cookHandlersService.areCookHandlersLoaded()) {
             cookHandlersService.loadCookHandlers(cooksNumber, this);
         }
@@ -29,22 +30,9 @@ public class CookPartWorkingStrategy implements CookWorkingStrategy {
                 getCookHandlerForPizzaMakingStart(new CookFillPizzaHandler(cookHandlersService, 0));
         final CookHandler bakeHandler =
                 getCookHandlerForPizzaMakingStart(new CookBakePizzaHandler(cookHandlersService, 0));
-        setPizzaForCookHandlers(List.of(doughHandler, fillingHandler, bakeHandler), pizza);
-        setPizzaCreationTimeForCookHandlers(List.of(doughHandler, fillingHandler, bakeHandler), pizzaCreationMinTimeInSec);
         doughHandler.setNext(fillingHandler);
         fillingHandler.setNext(bakeHandler);
         return doughHandler;
-    }
-    private void setPizzaCreationTimeForCookHandlers(List<CookHandler> cookHandlers,
-                                                     final int pizzaCreationMinTimeInSec){
-        for(CookHandler cookHandler: cookHandlers){
-            cookHandler.setPizzaCreationMinTimeInSec(pizzaCreationMinTimeInSec);
-        }
-    }
-    private void setPizzaForCookHandlers(List<CookHandler> cookHandlers, Pizza pizza) {
-        for (CookHandler cookHandler : cookHandlers) {
-            cookHandler.setPizza(pizza);
-        }
     }
 
     @Override
@@ -57,6 +45,9 @@ public class CookPartWorkingStrategy implements CookWorkingStrategy {
         while (handler == null) {
             handler = cookHandlersService.getCookHandlerReplacement(cookHandler);
         }
+        handler.setWorking(true);
+        handler.setPizza(pizza);
+        handler.setPizzaCreationMinTimeInSec(pizzaCreationMinTimeInSec);
         return handler;
     }
 }

@@ -56,7 +56,7 @@ public class CookHandlersService {
     public synchronized CookHandler getCookHandlerReplacement(final CookHandler cookHandler) {
         for (final CookHandler handler : cookHandlers) {
             if (handler.getClass() == cookHandler.getClass() &&
-                    (!handler.isWorking() || !handler.isStop())) {
+                    (!handler.isWorking() && !handler.isStop())) {
                 return handler;
             }
         }

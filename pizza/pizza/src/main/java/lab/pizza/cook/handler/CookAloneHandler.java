@@ -20,6 +20,7 @@ public class CookAloneHandler extends CookBaseHandler {
                     continue;
                 }
                 pizza.setPizzaState(pizzaState);
+                System.out.println(pizza.getName() + " " +pizza.getId()+" "+ pizza.getPizzaState());
                 if (pizzaState == PizzaState.READY) {
                     break;
                 }
