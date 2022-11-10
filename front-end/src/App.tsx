@@ -1,6 +1,6 @@
 const App = () => {
   return (
-    <div>I anna die</div>
+    <div>I wanna die</div>
   );
 }
 
