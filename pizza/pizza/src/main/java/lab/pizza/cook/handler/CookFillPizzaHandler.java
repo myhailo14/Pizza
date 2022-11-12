@@ -13,10 +13,12 @@ public class CookFillPizzaHandler extends CookBaseHandler {
     @Override
     public void handlePizzaPart() {
         handlePizzaState(pizza, PizzaState.FILLING);
-        System.out.printf("Pizza %s is filled\n", pizza.getName());
+        System.out.printf("Pizza %s %d is filled\n", pizza.getName(), pizza.getId());
         if (isStop()) {
             requestCookHandlerReplacement(this);
         } else {
+            this.pizza = null;
+            isWorking = false;
             super.handlePizzaPart();
         }
     }

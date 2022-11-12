@@ -16,10 +16,12 @@ public class CookMakeDoughHandler extends CookBaseHandler{
     public void handlePizzaPart() {
         PizzasLogger.logPizzaStart(pizza);
         handlePizzaState(pizza, PizzaState.DOUGH);
-        System.out.printf("Pizza %s is dough\n", pizza.getName());
+        System.out.printf("Pizza %s %d is dough\n", pizza.getName(), pizza.getId());
         if (isStop()) {
             requestCookHandlerReplacement(this);
         } else {
+            this.pizza = null;
+            isWorking = false;
             super.handlePizzaPart();
         }
     }
