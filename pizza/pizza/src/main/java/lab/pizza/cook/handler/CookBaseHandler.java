@@ -12,6 +12,7 @@ public abstract class CookBaseHandler implements CookHandler {
     protected boolean isWorking;
     protected boolean isStop;
     protected int id;
+    protected String cookType;
 
     public CookBaseHandler(final CookHandlersService cookHandlersService, final int id) {
         this.cookHandlersService = cookHandlersService;
@@ -95,5 +96,9 @@ public abstract class CookBaseHandler implements CookHandler {
         }
         cookHandler.setPizza(pizza);
         cookHandler.handlePizzaPart();
+    }
+    @Override
+    public String getCookType() {
+        return cookType;
     }
 }

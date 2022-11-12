@@ -13,4 +13,5 @@ public interface CookHandler {
     void setPizzaCreationMinTimeInSec(int pizzaCreationMinTimeInSec);
     void setId(int id);
     int getId();
+    String getCookType();
 }

@@ -6,8 +6,10 @@ import lab.pizza.model.PizzaState;
 
 public class CookBakePizzaHandler extends CookBaseHandler {
 
+    private static final String BAKE_PIZZA_TYPE = "bake";
     public CookBakePizzaHandler(CookHandlersService cookHandlersService, final int id) {
         super(cookHandlersService, id);
+        cookType = BAKE_PIZZA_TYPE;
     }
 
     @Override

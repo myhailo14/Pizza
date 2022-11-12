@@ -5,8 +5,11 @@ import lab.pizza.logger.PizzasLogger;
 import lab.pizza.model.PizzaState;
 
 public class CookAloneHandler extends CookBaseHandler {
+
+    private static final String ALONE_COOK_TYPE = "alone";
     public CookAloneHandler(CookHandlersService cookHandlersService, final int id) {
         super(cookHandlersService, id);
+        cookType = ALONE_COOK_TYPE;
     }
 
     @Override
