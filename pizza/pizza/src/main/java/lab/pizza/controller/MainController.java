@@ -43,4 +43,9 @@ public class MainController {
     public void resumeCook(@PathVariable final int id) {
         pizzaService.resumeCook(id);
     }
+
+    @PostMapping("/stop")
+    public void stopService() {
+        pizzaService.stopService();
+    }
 }

@@ -12,4 +12,7 @@ public class ClientsQueuesManagerService {
     public void startQueuesFilling(){
         clientsQueuesServiceThread.start();
     }
+    public void stopQueuesFilling(){
+        clientsQueuesServiceThread.stop();
+    }
 }
