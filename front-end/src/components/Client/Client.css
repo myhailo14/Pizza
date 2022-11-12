@@ -1,0 +1,74 @@
+.client-body{
+  width:50px;
+  height: 20px;
+  border-radius: 20%;
+  display: flex;
+  justify-content: center;
+}
+.client-head{
+  width:20px;
+  height: 20px;
+  background-color: #8B4513;
+  border-radius: 50%;
+}
+.client-info{
+  background-color: white;
+  width:fit-content;
+  height:fit-content;
+  border-radius: 20px;
+  position: absolute;
+  z-index: 2;
+  top:50%;
+  left: 50%;
+  transition: 1s;
+}
+.client-info ul{
+  padding: 10px 20px 10px 30px;
+}
+.client{
+  margin: 5px;
+  position: relative;
+  top:100%; 
+  animation: 2s linear 0s 1 normal moveUp;
+  animation-fill-mode: forwards;
+  
+}
+@keyframes moveUp {
+  from{
+    top:100%;
+  }
+  to{
+    top:0%;
+  }
+}
+@keyframes moveDown {
+  0%{
+    top:0px;
+    
+  }
+  20%{
+    top:0px;
+    transform: translateX(55px);
+    
+  }
+  30%{
+    top:20%;
+    
+  }
+  99%{
+    opacity: 1;
+  }
+  to{
+    top:100%;
+    transform: translateX(55px);
+    display: none;
+    opacity: 0;
+    position: absolute;
+    animation-play-state: paused;
+  }
+}
+
+.client-move-down{
+  animation: 4s linear 0s 1 normal moveDown;
+  animation-fill-mode: forwards; 
+}
