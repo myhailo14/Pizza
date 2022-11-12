@@ -57,6 +57,7 @@ public class CookHandlersService {
         for (final CookHandler handler : cookHandlers) {
             if (handler.getClass() == cookHandler.getClass() &&
                     (!handler.isWorking() && !handler.isStop())) {
+                handler.setWorking(true);
                 return handler;
             }
         }

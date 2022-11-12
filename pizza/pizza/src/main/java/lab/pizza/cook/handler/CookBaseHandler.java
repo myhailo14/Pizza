@@ -12,6 +12,7 @@ public abstract class CookBaseHandler implements CookHandler {
     protected boolean isWorking;
     protected boolean isStop;
     protected int id;
+    protected String cookType;
 
     public CookBaseHandler(final CookHandlersService cookHandlersService, final int id) {
         this.cookHandlersService = cookHandlersService;
@@ -77,7 +78,6 @@ public abstract class CookBaseHandler implements CookHandler {
     }
 
     protected void handlePizzaState(Pizza pizza, PizzaState requiredState) {
-        isWorking = true;
         while (!isStop && pizza.getPizzaState() != requiredState) {
             pizza.setPizzaState(requiredState);
             try {
@@ -86,14 +86,20 @@ public abstract class CookBaseHandler implements CookHandler {
                 throw new RuntimeException(e);
             }
         }
-        isWorking = false;
     }
     protected void requestCookHandlerReplacement(CookHandler handler) {
+        Pizza currentPizza = this.pizza;
+        this.pizza = null;
+        handler.setWorking(false);
         CookHandler cookHandler = cookHandlersService.getCookHandlerReplacement(handler);
         while (cookHandler == null){
             cookHandler = cookHandlersService.getCookHandlerReplacement(handler);
         }
-        cookHandler.setPizza(pizza);
+        cookHandler.setPizza(currentPizza);
         cookHandler.handlePizzaPart();
+    }
+    @Override
+    public String getCookType() {
+        return cookType;
     }
 }

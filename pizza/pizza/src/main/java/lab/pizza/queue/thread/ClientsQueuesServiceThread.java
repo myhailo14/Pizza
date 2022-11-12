@@ -30,7 +30,7 @@ public class ClientsQueuesServiceThread extends Thread {
             try {
                 Thread.sleep(clientGenerationDelayInSeconds * 1000L);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                System.out.println("Interruption of pizza handling...");
             }
         }
     }
