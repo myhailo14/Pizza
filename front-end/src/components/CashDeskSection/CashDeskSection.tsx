@@ -11,7 +11,7 @@ const CashDeskSection = (props:any) => {
     let desks=[];
     for(let i:number=0;i<desksNumber;i++){
       desks.push(
-        <div  className='desk'></div>
+        <div key={i} className='desk'></div>
       )
     }
     return desks;

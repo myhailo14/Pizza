@@ -32,7 +32,7 @@ const Client = (props:any) => {
         <ul className="pizzas">
           {
             props.info.order.map((pizza:any, index: number)=>{
-              return <li key={index}>{pizza.name}</li>
+              return <li key={pizza.id}>{pizza.name}</li>
             })
           }
         </ul>

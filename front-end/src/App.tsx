@@ -60,7 +60,7 @@ const App = () => {
   return (
     <>
       <DocumentCard className='app-wrapper'>
-          <CashDeskSection queues={queues} /> 
+        <CashDeskSection queues={queues} /> 
         <Kitchen cooks={cooks ?? []} stopCook={stopCook} resumeCook={resumeCook} />
         <DocumentCard className='buttons-container'>
           <DefaultButton text='Configuration' />
