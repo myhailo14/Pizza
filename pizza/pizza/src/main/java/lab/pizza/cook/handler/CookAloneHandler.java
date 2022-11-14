@@ -5,8 +5,11 @@ import lab.pizza.logger.PizzasLogger;
 import lab.pizza.model.PizzaState;
 
 public class CookAloneHandler extends CookBaseHandler {
+
+    private static final String ALONE_COOK_TYPE = "alone";
     public CookAloneHandler(CookHandlersService cookHandlersService, final int id) {
         super(cookHandlersService, id);
+        cookType = ALONE_COOK_TYPE;
     }
 
     @Override
@@ -28,18 +31,18 @@ public class CookAloneHandler extends CookBaseHandler {
                     break;
                 }
                 try {
-                    Thread.sleep(pizzaCreationMinTimeInSec / (PizzaState.values().length - 2) * 1000L);
+                    Thread.sleep(pizzaCreationMinTimeInSec / (PizzaState.values().length) * 1000L);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
-        //System.out.println("Stopped pizza handling, pizza state:" + pizza.getPizzaState().name());
-        isWorking = false;
         if (isStop) {
             requestCookHandlerReplacement(this);
         } else {
             PizzasLogger.logPizzaEnd(pizza);
+            this.pizza = null;
+            isWorking = false;
         }
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class PizzaRepository {
-    private final List<Pizza> pizzas;
+    private List<Pizza> pizzas;
     private final PizzaJsonReader pizzaJsonReader;
 
     @Autowired
@@ -20,7 +20,7 @@ public class PizzaRepository {
     }
 
     public void loadPizzas(final int pizzasNumber) {
-        pizzas.addAll(pizzaJsonReader.getPizzasFromJson(pizzasNumber));
+        pizzas = new ArrayList<>(pizzaJsonReader.getPizzasFromJson(pizzasNumber));
     }
 
     public int getPizzasAmount() {

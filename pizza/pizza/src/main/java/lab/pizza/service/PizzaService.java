@@ -77,6 +77,11 @@ public class PizzaService {
         clientsQueuesService.createClientsQueues(configService.getPayDesksNumber());
     }
 
+    public void stopService() {
+        clientsQueuesManagerService.stopQueuesFilling();
+        cookHandlersManagerService.stopOrdersHandling();
+    }
+
     private ConfigService createConfig(ClientsGenerationStrategy clientsGenerationStrategy,
                                        ConfigDto configDto) {
         return ConfigService.builder()
