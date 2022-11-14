@@ -60,15 +60,20 @@ const App = () => {
   }, []);
 
   return (
-    <DocumentCard className='app-wrapper'>
-      <div></div>
-      <Kitchen cooks={cooks ?? []} stopCook={stopCook} resumeCook={resumeCook} />
-      <DocumentCard className='buttons-container'>
-        <DefaultButton text='Configuration' />
-        <PrimaryButton text='Start' />
-        <PrimaryButton text='Stop' />
+    <>
+      <DocumentCard className='app-wrapper'>
+        <CashDeskSection queues={queues} /> 
+        <Kitchen cooks={cooks ?? []} stopCook={stopCook} resumeCook={resumeCook} />
+        <DocumentCard className='buttons-container'>
+          <DefaultButton text='Configuration' onClick={() => setConfigHidden(false)} />
+          <PrimaryButton text='Start' />
+          <PrimaryButton text='Stop' />
+        </DocumentCard>
+        <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden}/>
       </DocumentCard>
-    </DocumentCard>
+
+      {/* <button type="button" onClick={getQueues} /> */}
+    </>
   );
 }
 
