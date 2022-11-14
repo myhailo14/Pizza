@@ -1,6 +1,6 @@
 .cash-desk-section{
-  height: 100vh;
+  height: auto;
+  margin: 1rem;
   background-size: cover;
-  width:50%;
   background-color: #B0C4DE;
 }
