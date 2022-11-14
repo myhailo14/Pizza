@@ -59,6 +59,20 @@ const App = () => {
     });
   }, []);
 
+  const startApp = () => {
+    fetch(`http://localhost:8080/start`, {
+      method: 'POST'
+    });
+    setIsPizzeriaWorking(true);
+  }
+
+  const stopApp = () => {
+    fetch(`http://localhost:8080/stop`, {
+      method: 'POST'
+    });
+    setIsPizzeriaWorking(false);
+  }
+
   return (
     <>
       <DocumentCard className='app-wrapper'>
@@ -66,13 +80,13 @@ const App = () => {
         <Kitchen cooks={cooks ?? []} stopCook={stopCook} resumeCook={resumeCook} />
         <DocumentCard className='buttons-container'>
           <DefaultButton text='Configuration' onClick={() => setConfigHidden(false)} />
-          <PrimaryButton text='Start' />
-          <PrimaryButton text='Stop' />
+          <PrimaryButton text='Start' onClick={() => startApp()} />
+          <PrimaryButton text='Stop' onClick={() => stopApp()}/>
         </DocumentCard>
         <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden}/>
       </DocumentCard>
 
-      {/* <button type="button" onClick={getQueues} /> */}
+      <button type="button" onClick={getQueues}  >OAOAOA</button>
     </>
   );
 }
