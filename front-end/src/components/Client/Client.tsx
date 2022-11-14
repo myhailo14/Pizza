@@ -31,8 +31,8 @@ const Client = (props:any) => {
       <div className="client-info" ref={infoLabel} onMouseEnter={showInfo} onMouseLeave={hideInfo}>
         <ul className="pizzas">
           {
-            props.info.order.map((pizza:any)=>{
-              return <li>{pizza.name}</li>
+            props.info.order.map((pizza:any, index: number)=>{
+              return <li key={index}>{pizza.name}</li>
             })
           }
         </ul>
