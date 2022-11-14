@@ -1,0 +1,5 @@
+.desks{
+  display: flex;
+  justify-content: space-around;
+  background-size: cover;
+}

@@ -1,0 +1,12 @@
+.queues{
+  display: flex;
+  justify-content:space-around;
+  height: 80%;
+}
+.queue{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:50px;
+  position: relative;
+}
