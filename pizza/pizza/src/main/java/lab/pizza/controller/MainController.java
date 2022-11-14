@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequiredArgsConstructor
 public class MainController {
     private final PizzaService pizzaService;
