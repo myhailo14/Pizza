@@ -3,8 +3,8 @@ import Client from '../Client/Client';
 import './Queue.css';
 import _ from 'lodash';
 const Queue = (props:any) => {
-  const [clients,setClients]=useState([...props.clients]);
-  let servicedClients:any[]=[];
+  let [clients,setClients]=useState([...props.clients]);
+  let [servicedClients,setServicedClients]=useState<any>([]);
   function makeClientsGoAway(clients:any):void{
     for(let i:number=0;i<clients.length;i++){
       let client=document.querySelector(`[data-id="${clients[i].id}"]`);
@@ -19,11 +19,13 @@ const Queue = (props:any) => {
     }
   }
   useEffect(()=>{
-    servicedClients= _.differenceWith(clients, props.clients,isEqual);
-    console.log(servicedClients);
+    setServicedClients(_.differenceWith(clients, props.clients,isEqual))
+  },[props.clients]);
+  useEffect(()=>{
     makeClientsGoAway(servicedClients);
     setClients([...servicedClients,...props.clients]);
-  },[props.clients]);
+    clients=_.differenceWith(clients,servicedClients, isEqual);
+  },[servicedClients])
   return (
     <div className='queue' data-queueNumber={props.number}>
       {
