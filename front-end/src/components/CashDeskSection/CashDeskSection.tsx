@@ -6,7 +6,6 @@ import Client from '../Client/Client';
 import Queue from '../Queue/Queue';
 import {useState, useEffect} from 'react';
 const CashDeskSection = (props:any) => {
-  console.log([...props.queues]);
   const [queues,setQueues]=useState([...props.queues]);
   function createDesks(desksNumber:number):any{
     let desks=[];
@@ -17,18 +16,6 @@ const CashDeskSection = (props:any) => {
     }
     return desks;
   }
-  function createQueues(queuesNumber:number):any{
-    let q=[];
-    for(let i:number=0;i<queuesNumber;i++){
-      q.push(
-        <div className='queue' data-queueNum={i}></div>
-      )
-    }
-    return queues;
-  }
-  useEffect(()=>{
-    console.log(queues);
-  },queues);
   useEffect(()=>{
     setQueues(props.queues)
   },[props.queues]);
@@ -37,7 +24,6 @@ const CashDeskSection = (props:any) => {
       <div className='desks'>
       {
         ((desks:any)=>{
-          console.log(desks);
           return createDesks(desks.length)
         })(queues)
       }
@@ -45,7 +31,6 @@ const CashDeskSection = (props:any) => {
       <div className="queues">
         {
           queues.map((queue:any,i:number)=>{
-            console.log(queue);
             return <Queue clients={queue.clients} number={i}/>
           })
         }
