@@ -1,6 +1,6 @@
 import CashDeskSection from "./components/CashDeskSection/CashDeskSection";
 import { DefaultButton, DocumentCard, PrimaryButton, registerIcons } from "@fluentui/react";
-import { PlayResumeIcon, CirclePauseIcon } from '@fluentui/react-icons-mdl2';
+import { PlayResumeIcon, CirclePauseIcon, ChevronDownIcon } from '@fluentui/react-icons-mdl2';
 import Kitchen from "./components/Kitchen";
 import './App.scss';
 import { useCallback, useEffect, useState } from "react";
@@ -10,7 +10,8 @@ import Config from "./components/Config";
 registerIcons({
   icons: {
     PlayResume: <PlayResumeIcon />,
-    CirclePause: <CirclePauseIcon />
+    CirclePause: <CirclePauseIcon />,
+    ChevronDown: <ChevronDownIcon />
   }
 });
 
@@ -39,7 +40,7 @@ const App = () => {
 
     queueInterval = setInterval(async () => {
       let response = await fetch("http://localhost:8080/queues");
-      if(response.ok){
+      if (response.ok) {
         let queuesArr = await response.json();
         setQueues(queuesArr);
       } else {
@@ -66,7 +67,7 @@ const App = () => {
       method: 'POST'
     });
     setIsPizzeriaWorking(true);
-    
+
   }
 
   const stopApp = () => {
@@ -81,14 +82,14 @@ const App = () => {
   return (
     <>
       <DocumentCard className='app-wrapper'>
-        <CashDeskSection queues={queues} /> 
+        <CashDeskSection queues={queues} />
         <Kitchen cooks={cooks ?? []} stopCook={stopCook} resumeCook={resumeCook} />
         <DocumentCard className='buttons-container'>
           <DefaultButton text='Configuration' onClick={() => setConfigHidden(false)} />
           <PrimaryButton text='Start' onClick={() => startApp()} />
-          <PrimaryButton text='Stop' onClick={() => stopApp()}/>
+          <PrimaryButton text='Stop' onClick={() => stopApp()} />
         </DocumentCard>
-        <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden}/>
+        <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden} />
       </DocumentCard>
     </>
   );
