@@ -87,7 +87,7 @@ const App = () => {
         <DocumentCard className='buttons-container'>
           <DefaultButton text='Configuration' onClick={() => setConfigHidden(false)} />
           <PrimaryButton text='Start' onClick={() => startApp()} />
-          {/* <PrimaryButton text='Stop' onClick={() => stopApp()} /> */}
+          <PrimaryButton text='Stop' onClick={() => stopApp()} />
         </DocumentCard>
         <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden} />
       </DocumentCard>
