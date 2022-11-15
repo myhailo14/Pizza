@@ -15,8 +15,8 @@ export interface IPizza {
 export interface ICook {
   id: number;
   cookType: string;
-  isWorking: boolean;
-  isStop: boolean;
+  working: boolean;
+  stop: boolean;
   pizzaCreationMinTimeInSec: number;
   pizza: IPizza;
 }

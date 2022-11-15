@@ -30,26 +30,27 @@ const imageStyles: Partial<IImageStyles> = {
 const Cook: FunctionComponent<ICookProps> = (props: ICookProps) => {
   const { data, stop, resume } = props;
   const id = useId('tooltip');
-
+  
   const renderTooltipHandler = useCallback(() => {
+
     return (
       <div className='cook-info'>
         <span>Cook #{data.id}</span>
-        {data.isStop && (
+        {data.stop && (
           <>
             <span>Resting...</span>
             <ActionButton iconProps={{ iconName: 'PlayResume' }} onClick={resume} text='Resume' />
           </>
         )}
-        {data.isWorking && (
+        {data.working && (
           <>
-            <span>Working on pizza #{data.pizza.id} {data.pizza.name}</span>
+            <span>workingg on pizza #{data.pizza.id} {data.pizza.name}</span>
             <span>Status: {PizzaState[data.pizza.pizzaState]}</span>
             <span>Pizza creation time: {data.pizzaCreationMinTimeInSec.toFixed(0)}</span>
             <ActionButton iconProps={{iconName: 'CirclePause'}} text='Stop' onClick={stop} />
           </>
         )}
-        {!data.isStop && !data.isWorking && (
+        {!data.stop && !data.working && (
           <span>Waiting...</span>
         )}
       </div>
@@ -64,7 +65,7 @@ const Cook: FunctionComponent<ICookProps> = (props: ICookProps) => {
       directionalHint={DirectionalHint.bottomCenter}
       delay={TooltipDelay.zero}
     >
-      {data.isStop && (
+      {data.stop && (
         <Image
           styles={imageStyles}
           aria-describedby={id}
@@ -72,7 +73,7 @@ const Cook: FunctionComponent<ICookProps> = (props: ICookProps) => {
           imageFit={ImageFit.centerContain}
         />
       )}
-      {data.isWorking && (
+      {data.working && (
         <Image
           styles={imageStyles}
           aria-describedby={id}
@@ -80,7 +81,7 @@ const Cook: FunctionComponent<ICookProps> = (props: ICookProps) => {
           imageFit={ImageFit.centerContain}
         />
       )}
-      {!data.isStop && !data.isWorking && (
+      {!data.stop && !data.working && (
         <Image
           styles={imageStyles}
           aria-describedby={id}
