@@ -14,7 +14,8 @@ registerIcons({
   }
 });
 
-let interval: NodeJS.Timeout;
+let cookInterval: NodeJS.Timeout;
+let queueInterval: NodeJS.Timeout;
 
 const App = () => {
   const [isPizzeriaWorking, setIsPizzeriaWorking] = useState<boolean>(false);
@@ -22,29 +23,30 @@ const App = () => {
   const [isConfigHidden, setConfigHidden] = useState<boolean>(true);
   const [queues, setQueues] = useState([]);
 
-  function getQueues() {
-    let interval = setInterval(async () => {
+
+  useEffect(() => {
+    if (!isPizzeriaWorking) {
+      clearInterval(cookInterval);
+      clearInterval(queueInterval);
+      return;
+    }
+
+    cookInterval = setInterval(async () => {
+      const response = await fetch('http://localhost:8080/cooks');
+      const cooks = (await response.json()) as Cooks;
+      setCooks(cooks);
+    }, 100);
+
+    queueInterval = setInterval(async () => {
       let response = await fetch("http://localhost:8080/queues");
-      if (response.ok) {
+      if(response.ok){
         let queuesArr = await response.json();
         setQueues(queuesArr);
       } else {
         alert("Error HTTP: " + response.status);
       }
-    }, 1000)
-  }
+    }, 100)
 
-  useEffect(() => {
-    if (!isPizzeriaWorking) {
-      clearInterval(interval);
-      return;
-    }
-
-    interval = setInterval(async () => {
-      const response = await fetch('http://localhost:8080/cooks');
-      const cooks = (await response.json()) as Cooks;
-      setCooks(cooks);
-    }, 100);
   }, [isPizzeriaWorking]);
 
   const stopCook = useCallback((id: number) => {
@@ -64,6 +66,7 @@ const App = () => {
       method: 'POST'
     });
     setIsPizzeriaWorking(true);
+    
   }
 
   const stopApp = () => {
@@ -71,6 +74,8 @@ const App = () => {
       method: 'POST'
     });
     setIsPizzeriaWorking(false);
+    setCooks([]);
+    setQueues([]);
   }
 
   return (
@@ -85,8 +90,6 @@ const App = () => {
         </DocumentCard>
         <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden}/>
       </DocumentCard>
-
-      <button type="button" onClick={getQueues}  >OAOAOA</button>
     </>
   );
 }
