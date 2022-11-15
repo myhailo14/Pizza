@@ -31,24 +31,29 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
         subText: 'Here you can config your pizzeria.',
     };
 
-    const handleFooterClick = (sendRequest: boolean) => {
+    const handleFooterClick = async (sendRequest: boolean) => {
         if (sendRequest) {
-            fetch(`http://localhost:8080/config`, {
+            const response = await fetch(`http://localhost:8080/config`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                     // 'Content-Type': 'application/x-www-form-urlencoded',
-                  },
+                },
                 body: JSON.stringify({
-                    payDesksNumber : payDesksNumber,
-                    cooksNumber : cooksNumber,
-                    pizzasNumber : pizzasNumber,
-                    pizzaCreationMinTimeInSec : pizzaCreationMinTimeInSec,
-                    cookWorkingStrategy : cookWorkingStrategy,
-                    clientsGenerationStrategy : clientsGenerationStrategy
+                    payDesksNumber: payDesksNumber,
+                    cooksNumber: cooksNumber,
+                    pizzasNumber: pizzasNumber,
+                    pizzaCreationMinTimeInSec: pizzaCreationMinTimeInSec,
+                    cookWorkingStrategy: cookWorkingStrategy,
+                    clientsGenerationStrategy: clientsGenerationStrategy
                 })
-                
-            }).then(response => console.log(response));
+
+            })
+            if(response.ok){
+                window.alert("Your config was applied");
+            } else {
+                window.alert("ERROR APPLYIN CONFIG! ERROR HTTP: " + response.status);
+            }
         }
         props.hiddenChanger(true);
 
@@ -67,6 +72,8 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
 
     const handleInputChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string | undefined) => {
         const inputValue = Number.parseInt(value!);
+       
+        
         switch (event.currentTarget.name) {
             case "desks":
                 setPayDesksNumber(inputValue);
@@ -83,13 +90,13 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
         }
     }
 
-    const handleCookStrategyChange = ( event: React.FormEvent<HTMLDivElement>, option : IDropdownOption<any> | undefined) => {
-        
+    const handleCookStrategyChange = (event: React.FormEvent<HTMLDivElement>, option: IDropdownOption<any> | undefined) => {
+
         setCookStrategy(option!.key as string);
     }
 
-    const handleClientStrategyChange = ( event: React.FormEvent<HTMLDivElement>, option : IDropdownOption<any> | undefined) => {
-    
+    const handleClientStrategyChange = (event: React.FormEvent<HTMLDivElement>, option: IDropdownOption<any> | undefined) => {
+
         setGenerationStrategy(option!.key as string);
     }
 
@@ -98,10 +105,10 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
             hidden={props.isHidden}
             dialogContentProps={dialogContentProps}>
             <Stack tokens={{ childrenGap: 10 }}>
-                <TextField name="desks" suffix="pcs" label="Pay desks number" type="number" onChange={handleInputChange}></TextField>
-                <TextField name="cooks" suffix="pcs" label="Cooks Number" type="number" onChange={handleInputChange}></TextField>
-                <TextField name="pizzas" suffix="pcs" label="Minimal pizzas number" type="number" onChange={handleInputChange}></TextField>
-                <TextField name="time" suffix="sec" label="Minimal pizza cooking time" type="number" onChange={handleInputChange}></TextField>
+                <TextField name="desks" suffix="pcs" label="Pay desks number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
+                <TextField name="cooks" suffix="pcs" label="Cooks Number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
+                <TextField name="pizzas" suffix="pcs" label="Minimal pizzas number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
+                <TextField name="time" suffix="sec" label="Minimal pizza cooking time" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
                 <Dropdown label="Pizza cooking strategy" onChange={handleCookStrategyChange} placeholder="Select strategy" options={pizzaStrategiesOptions}></Dropdown>
                 <Dropdown label="Client generation strategy" onChange={handleClientStrategyChange} placeholder="Select strategy" options={clientStrategiesOptions}></Dropdown>
             </Stack>
