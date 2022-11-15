@@ -1,4 +1,5 @@
 import { DefaultButton, Dialog, DialogFooter, DialogType, Dropdown, IDropdownOption, PrimaryButton, Stack, TextField } from "@fluentui/react";
+import { Dictionary } from "lodash";
 import React, { Dispatch, SetStateAction, useState } from "react";
 
 export interface IConfigProps {
@@ -6,14 +7,13 @@ export interface IConfigProps {
     hiddenChanger: Dispatch<SetStateAction<boolean>>,
 }
 
-interface IConfigDto {
-    payDesksNumber: number,
-    cooksNumber: number,
-    pizzasNumber: number,
-    pizzaCreationMinTimeInSec: number,
-    cookWorkingStrategy: string,
-    clientsGenerationStrategy: string
+enum FieldName {
+    desks = "desks",
+    cooks = "cooks",
+    pizzas = "pizzas",
+    time = "time"
 }
+
 
 const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
 
@@ -37,7 +37,6 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: JSON.stringify({
                     payDesksNumber: payDesksNumber,
@@ -49,7 +48,7 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
                 })
 
             })
-            if(response.ok){
+            if (response.ok) {
                 window.alert("Your config was applied");
             } else {
                 window.alert("ERROR APPLYIN CONFIG! ERROR HTTP: " + response.status);
@@ -59,35 +58,30 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
 
     }
 
-    const pizzaStrategiesOptions: IDropdownOption[] =
-        [
-            { key: 'alone', text: "One cook - full pizza" },
-            { key: 'part', text: "One cook - one process" }
-        ]
+    const pizzaStrategiesOptions: IDropdownOption[] = [
+        { key: 'alone', text: "One cook - full pizza" },
+        { key: 'part', text: "One cook - one process" }
+    ]
 
-    const clientStrategiesOptions = [
+    const clientStrategiesOptions: IDropdownOption[] = [
         { key: 'default', text: "Fixed Genertion" },
         { key: 'random', text: "Random Generation" }
     ]
 
     const handleInputChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string | undefined) => {
+
+        console.log(value);
         const inputValue = Number.parseInt(value!);
-       
-        
-        switch (event.currentTarget.name) {
-            case "desks":
-                setPayDesksNumber(inputValue);
-                break;
-            case "cooks":
-                setCooksNumber(inputValue);
-                break;
-            case "pizzas":
-                setPizzasNumber(inputValue);
-                break;
-            case "time":
-                setCreationTime(inputValue);
-                break;
+
+        const setDictionary : Dictionary<React.Dispatch<React.SetStateAction<number>>> = {
+            "cooks": setCooksNumber,
+            "time": setCreationTime,
+            "pizzas": setPizzasNumber,
+            "desks": setPayDesksNumber
         }
+        
+        setDictionary[event.currentTarget.name](inputValue);
+        
     }
 
     const handleCookStrategyChange = (event: React.FormEvent<HTMLDivElement>, option: IDropdownOption<any> | undefined) => {
@@ -103,9 +97,10 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
     return (
         <Dialog
             hidden={props.isHidden}
-            dialogContentProps={dialogContentProps}>
-            <Stack tokens={{ childrenGap: 10 }}>
-                <TextField name="desks" suffix="pcs" label="Pay desks number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
+            dialogContentProps={dialogContentProps}
+        >
+            <Stack tokens={{ childrenGap: 20 }}>
+                <TextField name="desks" suffix="pcs" label="Pay desks number" type="number" min={0} step={1} onChange={handleInputChange}  ></TextField>
                 <TextField name="cooks" suffix="pcs" label="Cooks Number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
                 <TextField name="pizzas" suffix="pcs" label="Minimal pizzas number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
                 <TextField name="time" suffix="sec" label="Minimal pizza cooking time" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
