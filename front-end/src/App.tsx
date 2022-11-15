@@ -4,8 +4,9 @@ import { PlayResumeIcon, CirclePauseIcon, ChevronDownIcon } from '@fluentui/reac
 import Kitchen from "./components/Kitchen";
 import './App.scss';
 import { useCallback, useEffect, useState } from "react";
-import { Cooks } from "./models";
+import { Cooks, IQueue, PizzaState } from "./models";
 import Config from "./components/Config";
+import PizzaTable from "./components/PizzaTable";
 
 registerIcons({
   icons: {
@@ -22,7 +23,8 @@ const App = () => {
   const [isPizzeriaWorking, setIsPizzeriaWorking] = useState<boolean>(false);
   const [cooks, setCooks] = useState<Cooks | null>(null);
   const [isConfigHidden, setConfigHidden] = useState<boolean>(true);
-  const [queues, setQueues] = useState([]);
+  const [queues, setQueues] = useState<IQueue[]>([]);
+  const [showTable, setShowTable] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -39,9 +41,9 @@ const App = () => {
     }, 100);
 
     queueInterval = setInterval(async () => {
-      let response = await fetch("http://localhost:8080/queues");
+      const response = await fetch("http://localhost:8080/queues");
       if (response.ok) {
-        let queuesArr = await response.json();
+        const queuesArr = (await response.json()) as IQueue[];
         setQueues(queuesArr);
       } else {
         alert("Error HTTP: " + response.status);
@@ -87,9 +89,11 @@ const App = () => {
         <DocumentCard className='buttons-container'>
           <DefaultButton text='Configuration' onClick={() => setConfigHidden(false)} />
           <PrimaryButton text='Start' onClick={() => startApp()} />
+          <PrimaryButton text='View Table' onClick={() => setShowTable(true)} />
           {/* <PrimaryButton text='Stop' onClick={() => stopApp()} /> */}
         </DocumentCard>
         <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden} />
+        <PizzaTable clients={queues.flatMap(x => x.clients)} show={showTable} setShow={setShowTable} />
       </DocumentCard>
     </>
   );

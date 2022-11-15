@@ -21,4 +21,24 @@ export interface ICook {
   pizza: IPizza;
 }
 
+export interface IClient {
+  order: Pizzas;
+  queueNumber: number;
+  id: number;
+}
+
+export interface IPizzaViewModel {
+  clientId: number,
+  queueNumber: number
+  pizzaId: number,
+  name: string,
+  state: string;
+}
+
+export interface IQueue {
+  clients: Clients;
+}
+
 export type Cooks = Array<ICook>;
+export type Pizzas = Array<IPizza>;
+export type Clients = Array<IClient>;
