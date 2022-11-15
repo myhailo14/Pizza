@@ -44,7 +44,7 @@ const Cook: FunctionComponent<ICookProps> = (props: ICookProps) => {
         )}
         {data.working && (
           <>
-            <span>workingg on pizza #{data.pizza.id} {data.pizza.name}</span>
+            <span>Working on pizza #{data.pizza.id} {data.pizza.name}</span>
             <span>Status: {PizzaState[data.pizza.pizzaState]}</span>
             <span>Pizza creation time: {data.pizzaCreationMinTimeInSec.toFixed(0)}</span>
             <ActionButton iconProps={{iconName: 'CirclePause'}} text='Stop' onClick={stop} />
