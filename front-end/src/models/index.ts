@@ -9,7 +9,7 @@ export enum PizzaState {
 export interface IPizza {
   id: number;
   name: string;
-  pizzaState: PizzaState;
+  pizzaState: string;
 }
 
 export interface ICook {
@@ -32,7 +32,7 @@ export interface IPizzaViewModel {
   queueNumber: number
   pizzaId: number,
   name: string,
-  state: PizzaState;
+  state: string
 }
 
 export interface IQueue {

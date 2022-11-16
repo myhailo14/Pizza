@@ -21,7 +21,7 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
         type: DialogType.normal,
         title: 'Pizzeria config',
         closeButtonAriaLabel: 'Close',
-        subText: 'Here you can config your pizzeria.',
+        subText: 'Here you can config your pizzeria',
     };
 
     const handleFooterClick = async (sendRequest: boolean) => {
@@ -59,7 +59,7 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
     ]
 
     const clientStrategiesOptions: IDropdownOption[] = [
-        { key: 'default', text: "Fixed Genertion" },
+        { key: 'default', text: "Fixed Generation" },
         { key: 'random', text: "Random Generation" }
     ]
 
@@ -95,7 +95,7 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
             <Stack tokens={{ childrenGap: 20 }}>
                 <TextField name="desks" suffix="pcs" label="Pay desks number" type="number" min={0} step={1} onChange={handleInputChange}  ></TextField>
                 <TextField name="cooks" suffix="pcs" label="Cooks Number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
-                <TextField name="pizzas" suffix="pcs" label="Minimal pizzas number" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
+                <TextField name="pizzas" suffix="pcs" label="Number of pizza types" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
                 <TextField name="time" suffix="sec" label="Minimal pizza cooking time" type="number" min={0} step={1} onChange={handleInputChange}></TextField>
                 <Dropdown label="Pizza cooking strategy" onChange={handleCookStrategyChange} placeholder="Select strategy" options={pizzaStrategiesOptions}></Dropdown>
                 <Dropdown label="Client generation strategy" onChange={handleClientStrategyChange} placeholder="Select strategy" options={clientStrategiesOptions}></Dropdown>
