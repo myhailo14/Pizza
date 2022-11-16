@@ -31,7 +31,7 @@ public class CookAloneHandler extends CookBaseHandler {
                     break;
                 }
                 try {
-                    Thread.sleep(pizzaCreationMinTimeInSec / (PizzaState.values().length) * 1000L);
+                    Thread.sleep(Math.round(pizzaCreationMinTimeInSec * 1000L / (double)(PizzaState.values().length)));
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
