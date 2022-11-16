@@ -18,6 +18,7 @@ registerIcons({
 
 let cookInterval: NodeJS.Timeout;
 let queueInterval: NodeJS.Timeout;
+const requestIntervalTimeMs = 100;
 
 const App = () => {
   const [isPizzeriaWorking, setIsPizzeriaWorking] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const App = () => {
   const [isConfigHidden, setConfigHidden] = useState<boolean>(true);
   const [queues, setQueues] = useState<IQueue[]>([]);
   const [showTable, setShowTable] = useState<boolean>(false);
-
+  const [isStartRequestSent, setStartRequest] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isPizzeriaWorking) {
@@ -38,7 +39,7 @@ const App = () => {
       const response = await fetch('http://localhost:8080/cooks');
       const cooks = (await response.json()) as Cooks;
       setCooks(cooks);
-    }, 100);
+    }, requestIntervalTimeMs);
 
     queueInterval = setInterval(async () => {
       const response = await fetch("http://localhost:8080/queues");
@@ -48,7 +49,7 @@ const App = () => {
       } else {
         alert("Error HTTP: " + response.status);
       }
-    }, 100)
+    }, requestIntervalTimeMs)
 
   }, [isPizzeriaWorking]);
 
@@ -72,27 +73,17 @@ const App = () => {
 
   }
 
-  const stopApp = () => {
-    fetch(`http://localhost:8080/stop`, {
-      method: 'POST'
-    });
-    setIsPizzeriaWorking(false);
-    setCooks([]);
-    setQueues([]);
-  }
-
   return (
     <>
       <DocumentCard className='app-wrapper'>
         <CashDeskSection queues={queues} />
         <Kitchen cooks={cooks ?? []} stopCook={stopCook} resumeCook={resumeCook} />
         <DocumentCard className='buttons-container'>
-          <DefaultButton text='Configuration' onClick={() => setConfigHidden(false)} />
-          <PrimaryButton text='Start' onClick={() => startApp()} />
-          <PrimaryButton text='View Table' onClick={() => setShowTable(true)} />
-          {/* <PrimaryButton text='Stop' onClick={() => stopApp()} /> */}
+          <DefaultButton text='Configuration' onClick={() => setConfigHidden(false)} disabled={isPizzeriaWorking}/>
+          <PrimaryButton text='Start' onClick={() => startApp()} disabled={!(!isPizzeriaWorking && isStartRequestSent)} />
+          <PrimaryButton text='View Table' onClick={() => setShowTable(true)} disabled={!isPizzeriaWorking}/>
         </DocumentCard>
-        <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden} />
+        <Config isHidden={isConfigHidden} hiddenChanger={setConfigHidden} requestSendStateSetter={setStartRequest} />
         <PizzaTable clients={queues.flatMap(x => x.clients)} show={showTable} setShow={setShowTable} />
       </DocumentCard>
     </>
