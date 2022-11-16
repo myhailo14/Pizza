@@ -69,7 +69,7 @@ const PizzaTable: FunctionComponent<IPizzaTableProps> = (props: IPizzaTableProps
       hidden={!props.show}
       onDismiss={() => props.setShow(false)}
       dialogContentProps={dialogProps}
-      minWidth={600}
+      minWidth={700}
     >
       <DetailsList 
         isHeaderVisible={true} 
