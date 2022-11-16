@@ -32,7 +32,7 @@ export interface IPizzaViewModel {
   queueNumber: number
   pizzaId: number,
   name: string,
-  state: string;
+  state: PizzaState;
 }
 
 export interface IQueue {

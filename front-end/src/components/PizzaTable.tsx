@@ -1,4 +1,4 @@
-import { DetailsList, Dialog, DialogType, IColumn, SelectionMode } from "@fluentui/react";
+import { DetailsList, Dialog, DialogType, IColumn, IDetailsListStyleProps, IDetailsListStyles, IStyleFunctionOrObject, SelectionMode } from "@fluentui/react";
 import { Dispatch, FunctionComponent, SetStateAction } from "react";
 import { Clients, IPizzaViewModel, PizzaState } from "../models";
 
@@ -16,7 +16,7 @@ const PizzaTable: FunctionComponent<IPizzaTableProps> = (props: IPizzaTableProps
         queueNumber: client.queueNumber,
         pizzaId: pizza.id,
         name: pizza.name,
-        state: PizzaState[pizza.pizzaState]
+        state: pizza.pizzaState
       }
     });
   }).flatMap(x => x);
@@ -31,31 +31,36 @@ const PizzaTable: FunctionComponent<IPizzaTableProps> = (props: IPizzaTableProps
       key: 'clientId',
       name: 'Client Id',
       fieldName: 'clientId',
-      minWidth: 12
+      minWidth: 12,
+      maxWidth: 100
     },
     {
       key: 'queueNumber',
       name: 'Queue Number',
       fieldName: 'queueNumber',
-      minWidth: 12
+      minWidth: 12,
+      maxWidth: 100
     },
     {
       key: 'pizzaId',
       name: 'Pizza Id',
       fieldName: 'pizzaId',
-      minWidth: 12
+      minWidth: 12,
+      maxWidth: 100
     },
     {
       key: 'name',
       name: 'Name',
       fieldName: 'name',
-      minWidth: 30
+      minWidth: 12,
+      maxWidth: 100
     },
     {
       key: 'state',
       name: 'State',
       fieldName: 'state',
-      minWidth: 30
+      minWidth: 12,
+      maxWidth: 100
     }
   ];
   
@@ -64,12 +69,14 @@ const PizzaTable: FunctionComponent<IPizzaTableProps> = (props: IPizzaTableProps
       hidden={!props.show}
       onDismiss={() => props.setShow(false)}
       dialogContentProps={dialogProps}
+      minWidth={600}
     >
       <DetailsList 
         isHeaderVisible={true} 
         selectionMode={SelectionMode.none} 
         columns={columns} 
         items={pizzas} 
+        
       />
     </Dialog>
   );

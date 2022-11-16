@@ -5,15 +5,8 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 export interface IConfigProps {
     isHidden: boolean,
     hiddenChanger: Dispatch<SetStateAction<boolean>>,
+    requestSendStateSetter: Dispatch<SetStateAction<boolean>>
 }
-
-enum FieldName {
-    desks = "desks",
-    cooks = "cooks",
-    pizzas = "pizzas",
-    time = "time"
-}
-
 
 const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
 
@@ -50,8 +43,10 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
             })
             if (response.ok) {
                 window.alert("Your config was applied");
+                props.requestSendStateSetter(true);
             } else {
-                window.alert("ERROR APPLYIN CONFIG! ERROR HTTP: " + response.status);
+                window.alert("ERROR APPLYING CONFIG! ERROR HTTP: " + response.status);
+                props.requestSendStateSetter(true);
             }
         }
         props.hiddenChanger(true);
@@ -69,8 +64,6 @@ const Config: React.FunctionComponent<IConfigProps> = (props: IConfigProps) => {
     ]
 
     const handleInputChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string | undefined) => {
-
-        console.log(value);
         const inputValue = Number.parseInt(value!);
 
         const setDictionary : Dictionary<React.Dispatch<React.SetStateAction<number>>> = {
