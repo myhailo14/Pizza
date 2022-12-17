@@ -81,7 +81,7 @@ public abstract class CookBaseHandler implements CookHandler {
         while (!isStop && pizza.getPizzaState() != requiredState) {
             pizza.setPizzaState(requiredState);
             try {
-                Thread.sleep(pizzaCreationMinTimeInSec / 3 * 1000L);
+                Thread.sleep(Math.round(pizzaCreationMinTimeInSec * 1000L / 3.0));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
